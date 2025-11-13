@@ -1,9 +1,72 @@
-import { Container } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Image, Divider } from "@chakra-ui/react";
+import { useCartStore } from "../store/useCartStore";
 
-const Cart = () => {
-    return (<Container>
+export default function Cart() {
+  const items = useCartStore((state) => state.items);
+  const addItem = useCartStore((state) => state.addItem);
+  const removeItem = useCartStore((state) => state.removeItem);
 
-    </Container>
-    )
-};
-export default Cart;
+  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  return (
+    <Box p={8}>
+      <Text fontSize="2xl" fontWeight="bold" mb={6}>
+        🛒 장바구니
+      </Text>
+
+      {items.length === 0 ? (
+        <Text color="gray.500">장바구니가 비어있어요 🥲</Text>
+      ) : (
+        <Box>
+          {items.map((item) => (
+            <Box key={item.id} mb={4}>
+              <Flex align="center" justify="space-between">
+                <Flex align="center" gap={4}>
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    boxSize="60px"
+                    objectFit="cover"
+                    borderRadius="md"
+                  />
+                  <Box>
+                    <Text fontWeight="bold">{item.name}</Text>
+                    <Text color="gray.600">
+                      {item.price.toLocaleString()}원
+                    </Text>
+                  </Box>
+                </Flex>
+
+                <Flex align="center" gap={3}>
+                  <Button
+                    size="sm"
+                    onClick={() => removeItem(item.id)}
+                    colorScheme="red"
+                    variant="outline"
+                  >
+                    삭제
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => addItem(item)}
+                    colorScheme="teal"
+                  >
+                    + 수량추가
+                  </Button>
+                  <Text>{item.quantity}개</Text>
+                </Flex>
+              </Flex>
+              <Divider my={3} />
+            </Box>
+          ))}
+
+          <Flex justify="flex-end" mt={6}>
+            <Text fontSize="xl" fontWeight="bold">
+              총 금액: {total.toLocaleString()}원
+            </Text>
+          </Flex>
+        </Box>
+      )}
+    </Box>
+  );
+}

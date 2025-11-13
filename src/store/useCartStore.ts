@@ -5,6 +5,7 @@ interface CartItem {
     name: string;
     price: number;
     quantity: number;
+    image: string;
 }
 
 interface CartState {
@@ -23,7 +24,7 @@ export const useCartStore = create<CartState>((set, get) => ({
                     ...i, quantity: i.quantity + 1 } : i ),
             });
         } else {
-            set({ items: [...get().items, item]});
+            set({ items: [...get().items, { ...item, quantity: 1 }] });
         }
     },
     removeItem: (id) =>
