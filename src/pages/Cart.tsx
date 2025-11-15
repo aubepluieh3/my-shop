@@ -1,5 +1,7 @@
 import { Box, Flex, Text, Button, Image, Divider } from "@chakra-ui/react";
 import { useCartStore } from "../store/useCartStore";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Cart() {
   const items = useCartStore((state) => state.items);
@@ -7,6 +9,7 @@ export default function Cart() {
   const removeItem = useCartStore((state) => state.removeItem);
   const decreaseItem = useCartStore((state) => state.decreaseItem);
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const navigate = useNavigate();
 
   return (
     <Box p={8}>
@@ -67,6 +70,11 @@ export default function Cart() {
             <Text fontSize="xl" fontWeight="bold">
               총 금액: {total.toLocaleString()}원
             </Text>
+          </Flex>
+          <Flex justify="flex-end" mt={4}>
+            <Button colorScheme="teal" onClick={() => navigate("/checkout")}>
+              결제하기
+            </Button>
           </Flex>
         </Box>
       )}
