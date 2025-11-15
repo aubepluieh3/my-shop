@@ -5,16 +5,21 @@ interface ProductCardProps {
     id: string;
     name: string;
     price: number;
+    discountRate?: number;
     image: string;
 }
 
 
-const ProductCard = ({id, name, price, image} : ProductCardProps) => {
+const ProductCard = ({id, name, price, discountRate, image} : ProductCardProps) => {
     const addItem = useCartStore((state) => state.addItem);
+    const finalPrice = discountRate 
+        ? Math.round(price * (1 - discountRate / 100))
+        : price;
+
     const handleAddToCart = () => {
         addItem (
             {
-                id, name, price, image, quantity: 1,
+                id, name, price:finalPrice, image, quantity: 1,
             }
         );
     };
@@ -30,7 +35,13 @@ const ProductCard = ({id, name, price, image} : ProductCardProps) => {
       <VStack spacing={3}>
         <Image src={image} alt={name} boxSize="150px" objectFit="cover" />
         <Text fontWeight="bold">{name}</Text>
-        <Text color="gray.600">{price.toLocaleString()}원</Text>
+        {discountRate ? (
+          <Text fontWeight="bold">
+            <Text as="span" color="red.500">{discountRate}%</Text> {finalPrice.toLocaleString()}원
+          </Text>
+        ) : (
+          <Text fontWeight="bold">{price.toLocaleString()}원</Text>
+        )}
         <Button bg="blue.800" color="white" size="sm" onClick={handleAddToCart}>
           장바구니 담기
         </Button>
