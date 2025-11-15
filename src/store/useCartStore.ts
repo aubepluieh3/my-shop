@@ -15,6 +15,7 @@ interface CartState {
     addItem: (item: CartItem) => void;
     decreaseItem:(id: string) => void;
     removeItem: (id: string) => void;
+    clearCart: () => void;
 }
 
 export const useCartStore = create(
@@ -56,6 +57,7 @@ export const useCartStore = create(
         removeItem: (id) => {
           set({ items: get().items.filter((i) => i.id !== id) });
         },
+        clearCart: () => set({ items: [] }),
       }),
       {
         name: "cart-storage",

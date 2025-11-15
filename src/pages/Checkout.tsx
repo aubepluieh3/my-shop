@@ -1,10 +1,13 @@
 import { Box, Text, Flex, Button, Divider } from "@chakra-ui/react";
 import { useCartStore } from "../store/useCartStore";
+import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
   const items = useCartStore((state) => state.items);
 
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const navigate = useNavigate();
 
   return (
     <Box p={8}>
@@ -37,7 +40,8 @@ export default function Checkout() {
             w="100%"
             onClick={() => {
               alert(`총 결제 금액: ${total.toLocaleString()}원`);
-              useCartStore.getState().items = []; // 장바구니 초기화
+              clearCart(); // 장바구니 초기화
+              navigate("/success");
             }}
           >
             Toss 결제 테스트
