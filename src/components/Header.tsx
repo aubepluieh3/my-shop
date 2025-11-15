@@ -14,7 +14,7 @@ export default function Header() {
       align="center"
       px={8}
       py={4}
-      bg="teal.500"
+      bg="blue.200"
       color="white"
     >
       <Box>
@@ -31,7 +31,7 @@ export default function Header() {
           </Button>
         </Link>
         <Link to="/cart">
-          <Button colorScheme="orange" variant="solid">
+          <Button bg="blue.800" variant="solid" color="white">
             장바구니 ({cartCount})
           </Button>
         </Link>

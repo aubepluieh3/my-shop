@@ -56,7 +56,7 @@ export default function Cart() {
                   <Button
                     size="sm"
                     onClick={() => addItem(item)}
-                    colorScheme="teal"
+                    bg="blue.300"
                   >
                     +
                   </Button>
@@ -72,7 +72,7 @@ export default function Cart() {
             </Text>
           </Flex>
           <Flex justify="flex-end" mt={4}>
-            <Button colorScheme="teal" onClick={() => navigate("/checkout")}>
+            <Button bg="blue.800" color="white" onClick={() => navigate("/checkout")}>
               결제하기
             </Button>
           </Flex>

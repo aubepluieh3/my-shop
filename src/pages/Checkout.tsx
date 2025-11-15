@@ -92,7 +92,7 @@ export default function Checkout() {
           <div id="payment-method" style={{ marginBottom: "16px" }} />
           <div id="agreement" style={{ marginBottom: "16px" }} />
 
-          <Button colorScheme="teal" w="100%" size="lg" onClick={handlePayment} isDisabled={!ready}>
+          <Button bg="blue.800" color="white" w="100%" size="lg" onClick={handlePayment} isDisabled={!ready}>
             결제하기
           </Button>
         </Box>

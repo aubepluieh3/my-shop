@@ -10,7 +10,7 @@ export default function Success() {
         ✅ 결제 완료
       </Text>
       <Text mb={6}>주문이 성공적으로 처리되었습니다.</Text>
-      <Button colorScheme="teal" onClick={() => navigate("/")}>
+      <Button bg="blue.300" color="white" onClick={() => navigate("/")}>
         홈으로 돌아가기
       </Button>
     </Box>

@@ -14,7 +14,7 @@ const sampleProducts = [
 const Home = () => {
   return (
     <Container maxW="container.lg" py="8">
-      <Heading mb="6">🛍️ welcome to sooh world</Heading>
+      <Heading mb="6">welcome to sooh world</Heading>
       <SimpleGrid columns={[1, 2, 3, 4]} spacing="6">
         {sampleProducts.map((product) => (
           <ProductCard key={product.id} {...product} />
