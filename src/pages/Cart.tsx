@@ -5,7 +5,7 @@ export default function Cart() {
   const items = useCartStore((state) => state.items);
   const addItem = useCartStore((state) => state.addItem);
   const removeItem = useCartStore((state) => state.removeItem);
-
+  const decreaseItem = useCartStore((state) => state.decreaseItem);
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
@@ -46,14 +46,17 @@ export default function Cart() {
                   >
                     삭제
                   </Button>
+                  <Button size="sm" onClick={()=> decreaseItem(item.id)}>
+                    -
+                  </Button>
+                  <Text>{item.quantity}개</Text>
                   <Button
                     size="sm"
                     onClick={() => addItem(item)}
                     colorScheme="teal"
                   >
-                    + 수량추가
+                    +
                   </Button>
-                  <Text>{item.quantity}개</Text>
                 </Flex>
               </Flex>
               <Divider my={3} />
