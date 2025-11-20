@@ -2,17 +2,21 @@ import {create} from "zustand";
 import { persist } from "zustand/middleware";
 
 
-interface CartItem {
-    id: string;
-    name: string;
-    price: number;
-    quantity: number;
-    image: string;
+interface CartItem extends Product {
+  quantity: number;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  discountRate?: number;
 }
 
 interface CartState {
     items: CartItem[];
-    addItem: (item: CartItem) => void;
+    addItem: (item: Product) => void;
     decreaseItem:(id: string) => void;
     removeItem: (id: string) => void;
     clearCart: () => void;
