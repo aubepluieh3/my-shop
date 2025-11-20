@@ -11,20 +11,12 @@ interface ProductCardProps {
 
 
 const ProductCard = ({id, name, price, discountRate, image} : ProductCardProps) => {
-    const addItem = useCartStore((state) => state.addItem);
     const finalPrice = discountRate 
         ? Math.round(price * (1 - discountRate / 100))
         : price;
 
-    const handleAddToCart = () => {
-        addItem (
-            {
-                id, name, price:finalPrice, image, quantity: 1,
-            }
-        );
-    };
     return (
-    <Box borderWidth="1px" borderRadius="md" p={4} w="200px" shadow="md" m="2px" _hover={{ 
+    <Box height="100%" flexDirection="column" display="flex" borderWidth="1px" borderRadius="md" p={4} w="200px" shadow="md" m="2px" _hover={{ 
       m: "0px",
       shadow: "2xl",
       borderWidth: "3px",
@@ -42,9 +34,6 @@ const ProductCard = ({id, name, price, discountRate, image} : ProductCardProps) 
         ) : (
           <Text fontWeight="bold">{price.toLocaleString()}원</Text>
         )}
-        <Button bg="blue.800" color="white" size="sm" onClick={handleAddToCart}>
-          장바구니 담기
-        </Button>
       </VStack>
     </Box>
   );
