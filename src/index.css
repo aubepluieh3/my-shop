@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: white;
+  opacity: 0.2;
+  transition: opacity 0.2s;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  opacity: 0.8;
+}
+
+.swiper-pagination-bullet {
+  background: white !important;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  background: white !important;
+  opacity: 1;
+}

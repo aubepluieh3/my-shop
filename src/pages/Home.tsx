@@ -1,17 +1,17 @@
-import { SimpleGrid, Container, Heading } from "@chakra-ui/react";
+import { SimpleGrid, Container, Box } from "@chakra-ui/react";
 import ProductCard from "../components/ProductCard";
 import { products } from "../data/products";
-import { Link } from "react-router-dom";
+import BannerSlider from "../components/BannerSlider";
 
 const Home = () => {
   return (
     <Container maxW="container.lg" py="8">
-      <Heading mb="6">oweol</Heading>
+      <Box mb={8}>
+        <BannerSlider />
+      </Box>
       <SimpleGrid columns={[1, 2, 3, 4]} spacing="6">
         {products.map((product) => (
-          <Link to={`/product/${product.id}`}>
-            <ProductCard key={product.id} {...product} />
-          </Link>
+          <ProductCard key={product.id} {...product} />
         ))}
       </SimpleGrid>
     </Container>
