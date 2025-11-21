@@ -14,20 +14,24 @@ export default function Header() {
       align="center"
       px={8}
       py={4}
-      bg="blue.200"
-      color="white"
+      color="black"
     >
       <Box>
         <Link to="/">
           <Text fontSize="xl" fontWeight="bold">
-            🛍️ MyShop
+            🛍️ oweol
           </Text>
         </Link>
       </Box>
       <Flex align="center" gap={4}>
         <Link to="/">
-          <Button variant="ghost" color="white">
+          <Button bg="purple.300" variant="ghost" color="white">
             홈
+          </Button>
+        </Link>
+        <Link to="/favorite">
+          <Button bg="pink.300" variant="ghost" color="white">
+            좋아요
           </Button>
         </Link>
         <Link to="/cart">

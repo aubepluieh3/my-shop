@@ -7,6 +7,7 @@ import Success from './pages/Success';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import ProductDetail from './pages/ProductDetail';
+import Favorite from './pages/Favorite';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Header />
       <Routes>
         <Route path ="/" element = {<Home />} />
+        <Route path="/favorite" element = {<Favorite/>} />
         <Route path="/cart" element = {<Cart/>} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
