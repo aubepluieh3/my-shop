@@ -1,16 +1,29 @@
 import { useParams } from "react-router-dom";
 import { Box, Image, Text, Button, VStack } from "@chakra-ui/react";
-import { useCartStore } from "../store/useCartStore";
-import { products } from "../data/products"; // 상품 목록 불러오는 곳
+import { Product, useCartStore } from "../store/useCartStore";
+import { useEffect, useState } from "react";
+import { fetchProductById } from "../api/productApi";
 
 export default function ProductDetail() {
-  const { id } = useParams();
-  const product = products.find((p) => p.id === id);
+  const { id } = useParams<{ id: string }>();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   const addItem = useCartStore((state) => state.addItem);
 
-  if (!product) {
-    return <Text>상품을 찾을 수 없습니다 😢</Text>;
-  }
+  useEffect(() => {
+    const loadProduct = async () => {
+      setLoading(true);
+      if (!id) return;
+      const data = await fetchProductById(Number(id));
+      setProduct({ ...data, id: data.id.toString() }); // id string 변환
+      setLoading(false);
+    };
+
+    loadProduct();
+  }, [id]);
+
+  if (loading) return <Text>Loading...</Text>;
+  if (!product) return <Text>상품을 찾을 수 없습니다 😢</Text>;
 
   return (
     <Box p={8}>

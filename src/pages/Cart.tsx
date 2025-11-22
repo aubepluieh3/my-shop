@@ -10,6 +10,7 @@ export default function Cart() {
   const decreaseItem = useCartStore((state) => state.decreaseItem);
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const navigate = useNavigate();
+  console.log(items);
 
   return (
     <Box p={8}>

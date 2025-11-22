@@ -1,0 +1,11 @@
+[
+    { "id": 1, "name": "핑구 키링", "price": 7000, "image": "/images/keyring.png" },
+    { "id": 2, "name": "슬리퍼", "price": 23000, "image": "/images/slippers.png" },
+    { "id": 3, "name": "농구공", "price": 10000, "image": "/images/basketball.jpeg" },
+    { "id": 4, "name": "케로로 티셔츠", "price": 30000, "discountRate": 15, "image": "/images/keroro.png" },
+    { "id": 5, "name": "MLB 뉴욕 양키스 미드 크라운 볼캡 데님 블랙", "price": 57000, "image": "/images/era.png" },
+    { "id": 6, "name": "이불", "price": 28000, "image": "/images/bedding.png" },
+    { "id": 7, "name": "아비브 어성초 패드", "price": 26000, "image": "/images/abib.png" },
+    { "id": 8, "name": "핸드볼 스페지알", "price": 123000, "image": "/images/adidas.png" }
+  ]
+  

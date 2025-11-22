@@ -6,7 +6,7 @@ interface CartItem extends Product {
   quantity: number;
 }
 
-interface Product {
+export interface Product {
   id: string;
   name: string;
   price: number;

@@ -1,17 +1,48 @@
 import { Box, SimpleGrid, Text, VStack, Image} from "@chakra-ui/react";
-import { products } from "../data/products";
 import { useFavoriteStore } from "../store/useFavoriteStore";
+import { useEffect, useState } from "react";
+import { Product } from "../store/useCartStore";
+import { fetchProducts } from "../api/productApi";
 
 export default function Favorite() {
+
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
   const favorites = useFavoriteStore((state) => state.favorites);
-  const favoriteProducts = products.filter((p) => favorites.includes(p.id));
   const toggleFavorite = useFavoriteStore((state) => state.toggleFavorite);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchProducts();
+        setAllProducts(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProducts();
+  }, []);
+
+  useEffect(() => {
+    if (!loading && allProducts.length > 0) {
+      setFavoriteProducts(
+        allProducts.filter((p) => favorites.includes(p.id))
+      );
+    }
+  }, [loading, allProducts, favorites]);
+
+  if (loading) return <Text>상품 불러오는 중...</Text>;
+
   return (
       <Box p={8}>
         <Text fontSize="2xl" fontWeight="bold" mb={6}>
           💗 좋아요
         </Text>
-        {favorites.length === 0 ? (
+        {favoriteProducts.length === 0 ? (
           <Text color="gray.500">좋아요 목록이 비어있어요 🥲</Text>
         ): (        <SimpleGrid columns={[2, 3, 4]} spacing={0}>
           {favoriteProducts.map((product) => (
