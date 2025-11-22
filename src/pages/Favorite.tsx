@@ -11,7 +11,9 @@ export default function Favorite() {
         <Text fontSize="2xl" fontWeight="bold" mb={6}>
           💗 좋아요
         </Text>
-        <SimpleGrid columns={[2, 3, 4]} spacing={0}>
+        {favorites.length === 0 ? (
+          <Text color="gray.500">좋아요 목록이 비어있어요 🥲</Text>
+        ): (        <SimpleGrid columns={[2, 3, 4]} spacing={0}>
           {favoriteProducts.map((product) => (
             <Box
               key={product.id}
@@ -46,6 +48,8 @@ export default function Favorite() {
             </Box>
           ))}
         </SimpleGrid>
+        )
+      }
       </Box>
     );
 }
