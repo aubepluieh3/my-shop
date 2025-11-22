@@ -25,6 +25,10 @@ export default function ProductDetail() {
   if (loading) return <Text>Loading...</Text>;
   if (!product) return <Text>상품을 찾을 수 없습니다 😢</Text>;
 
+  const finalPrice = product.discountRate 
+    ? Math.round(product.price * (1 - product.discountRate / 100))
+    : product.price;
+
   return (
     <Box p={8}>
       <VStack spacing={6}>
@@ -41,13 +45,18 @@ export default function ProductDetail() {
         </Text>
 
         <Text fontSize="xl" color="gray.700">
-          {product.price.toLocaleString()}원
+          {product.discountRate && (
+            <Text as="span" color="red.500" mr={2}>
+              {product.discountRate}%
+            </Text>
+          )}
+          {finalPrice.toLocaleString()}원
         </Text>
 
         <Button
           bg="blue.800"
           color="white"
-          onClick={() => addItem(product)}
+          onClick={() => addItem({ ...product, price: finalPrice })}
         >
           장바구니 담기
         </Button>
