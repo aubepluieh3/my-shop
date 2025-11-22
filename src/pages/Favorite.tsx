@@ -5,6 +5,7 @@ import { useFavoriteStore } from "../store/useFavoriteStore";
 export default function Favorite() {
   const favorites = useFavoriteStore((state) => state.favorites);
   const favoriteProducts = products.filter((p) => favorites.includes(p.id));
+  const toggleFavorite = useFavoriteStore((state) => state.toggleFavorite);
   return (
       <Box p={8}>
         <Text fontSize="2xl" fontWeight="bold" mb={6}>
@@ -14,15 +15,13 @@ export default function Favorite() {
           {favoriteProducts.map((product) => (
             <Box
               key={product.id}
-              w="240px"
               h="280px"
-              borderRight="1px solid #e0e0e0"
-              borderBottom="1px solid #e0e0e0"
+              border="1px solid #e0e0e0"
               display="flex"
               flexDirection="column"
               position="relative"
             >
-              <VStack spacing={2} p={3} align="start">
+              <VStack spacing={2} p={3} align="center">
                 <Image
                   src={product.image}
                   alt={product.name}
@@ -40,6 +39,7 @@ export default function Favorite() {
                 right="8px"
                 fontSize="1.5rem"
                 color="red.500"
+                onClick={ () => toggleFavorite(product.id)}
               >
                 ♥
               </Box>
