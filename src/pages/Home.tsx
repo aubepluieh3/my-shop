@@ -1,4 +1,4 @@
-import { SimpleGrid, Container, Box } from "@chakra-ui/react";
+import { SimpleGrid, Container, Box, Input,Text } from "@chakra-ui/react";
 import ProductCard from "../components/ProductCard";
 import BannerSlider from "../components/BannerSlider";
 import { Product } from "../store/useCartStore";
@@ -8,34 +8,57 @@ import { fetchProducts } from "../api/productApi";
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      setLoading(true);
-      const data = await fetchProducts();
-      debugger;
+  const loadProducts = async (query?: string) => {
+    setLoading(true);
+    try {
+      const data = await fetchProducts(query);
       setProducts(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
       setLoading(false);
-    };
+    }
+  };
+  
+  useEffect(() => {
     loadProducts();
   }, []);
-
+  
+  useEffect(() => {
+    loadProducts(search || undefined);
+  }, [search]);
+  
+  
   return (
     <Container maxW="container.lg" py="8">
+      <Input
+        placeholder="검색어를 입력하세요"
+        mb={6}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            setSearch(searchTerm);
+          }
+        }}
+      />
       <Box mb={8}>
         <BannerSlider />
       </Box>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <SimpleGrid columns={[1, 2, 3, 4]} spacing="6">
-          {products.map((product) => (
-            <Box key={product.id}>
-              <ProductCard {...product} />
-            </Box>
-          ))}
-        </SimpleGrid>
-      )}
+      <SimpleGrid columns={[1, 2, 3, 4]} spacing="6">
+        {loading ? (
+          <Text>로딩중...</Text>
+        ) : products.length === 0 ? (
+          <Text>검색 결과가 없습니다 😢</Text>
+        ) : (
+          products.map((product) => (
+            <ProductCard key={product.id} {...product} />
+          ))
+        )}
+      </SimpleGrid>
     </Container>
   );
 };
