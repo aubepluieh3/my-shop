@@ -1,14 +1,17 @@
-import { useParams } from "react-router-dom";
-import { Box, Image, Text, Button, VStack } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Box, Image, Text, Button, VStack, HStack, IconButton, Input } from "@chakra-ui/react";
 import { Product, useCartStore } from "../store/useCartStore";
 import { useEffect, useState } from "react";
 import { fetchProductById } from "../api/productApi";
+import { MinusIcon, AddIcon } from "@chakra-ui/icons";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
   const addItem = useCartStore((state) => state.addItem);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -29,6 +32,9 @@ export default function ProductDetail() {
     ? Math.round(product.price * (1 - product.discountRate / 100))
     : product.price;
 
+  const handleBuyNow = () => {
+    navigate("/checkout", {state: { products: [{ ...product, price: finalPrice, quantity }] }, });
+  }  
   return (
     <Box p={8}>
       <VStack spacing={6}>
@@ -53,13 +59,38 @@ export default function ProductDetail() {
           {finalPrice.toLocaleString()}원
         </Text>
 
-        <Button
-          bg="blue.800"
-          color="white"
-          onClick={() => addItem({ ...product, price: finalPrice })}
-        >
-          장바구니 담기
-        </Button>
+        <HStack>
+          <IconButton
+            icon={<MinusIcon />}
+            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+            aria-label="decrease"
+          />
+          <Input
+            value={quantity}
+            readOnly
+            width="50px"
+            textAlign="center"
+          />
+          <IconButton
+            icon={<AddIcon />}
+            bg="blue.300"
+            onClick={() => setQuantity(quantity + 1)}
+            aria-label="increase"
+          />
+        </HStack>
+
+        <HStack spacing={4}>
+          <Button
+            bg="green.300"
+            color="white"
+            onClick={() => addItem({ ...product, price: finalPrice, quantity})}
+          >
+            장바구니 담기
+          </Button>
+          <Button bg="orange.300" color="white" onClick={handleBuyNow}>
+              바로 결제하기
+          </Button>
+        </HStack>    
       </VStack>
     </Box>
   );

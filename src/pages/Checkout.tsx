@@ -1,14 +1,17 @@
 import { Box, Text, Flex, Button, Divider } from "@chakra-ui/react";
 import { useCartStore } from "../store/useCartStore";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "YK7Y2SpZ55rel0iCLXUH4";
 
 export default function Checkout() {
-  const items = useCartStore((state) => state.items);
+  const cartItems = useCartStore((state) => state.items); // 항상 호출
+  const location = useLocation();
+  const items = (location.state?.products as any[]) || cartItems;
+  
   const clearCart = useCartStore((state) => state.clearCart);
   const navigate = useNavigate();
 
@@ -58,7 +61,9 @@ export default function Checkout() {
         customerMobilePhone: "01012341234",
       });
 
-      clearCart(); // 결제 완료 후 장바구니 초기화
+      if (!location.state?.products) {
+        clearCart();
+      }
       navigate("/success");
     } catch (error) {
       console.error(error);
