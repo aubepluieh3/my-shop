@@ -4,6 +4,7 @@ import BannerSlider from "../components/BannerSlider";
 import { Product } from "../store/useCartStore";
 import { useEffect, useState } from "react";
 import { fetchProducts } from "../api/productApi";
+import ChatButton from "../components/ChatButton";
 
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -59,6 +60,7 @@ const Home = () => {
           ))
         )}
       </SimpleGrid>
+      <ChatButton />
     </Container>
   );
 };
