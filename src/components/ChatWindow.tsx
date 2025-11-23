@@ -8,18 +8,27 @@ interface ChatWindowProps {
     onClose: () => void;
 }
 
+interface ChatMessage {
+    text: string;
+    sender: "user" | "bot";
+    time: string;
+}
+
 export default function ChatWindow({ onClose }: ChatWindowProps) {
     const [message, setMessage] = useState("");
-    const [chatList, setChatList] = useState<String[]>([]);
+    const [chatList, setChatList] = useState<ChatMessage[]>([]);
+
+    const addMessage = (text: string, sender: "user" | "bot") => {
+        const now = new Date();
+        const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        setChatList(prev => [...prev, { text, sender, time }]);
+    };
 
     useEffect(() => {
-        socket.on("receive_message", (msg) => {
-        setChatList((prev) => [...prev, msg]);
+        socket.on("receive_message", (msg: ChatMessage) => {
+          addMessage(msg.text, msg.sender);
         });
-
-        return () => {
-        socket.off("receive_message");
-        };
+        return () => {socket.off("receive_message");};
     }, []);
 
     const sendMessage = () => {
@@ -35,10 +44,19 @@ export default function ChatWindow({ onClose }: ChatWindowProps) {
                 <Button size="xs" colorScheme="red" onClick={onClose}> 닫기 </Button>
             </Flex> 
             <VStack align="stretch" spacing={2} mb={3} maxH="250px" overflowY="auto" >
-                {chatList.map((msg, i) => ( 
-                    <Box key={i} bg="gray.100" p={2} borderRadius="md" fontSize="sm" > {msg} </Box> 
-                    ))
-                } 
+                {chatList.map((msg, i) => (
+                    <Flex key={i} justify={msg.sender === "user" ? "flex-end" : "flex-start"}>
+                        <Box
+                        bg={msg.sender === "user" ? "blue.100" : "gray.100"}
+                        p={2}
+                        borderRadius="md"
+                        maxW="70%"
+                        >
+                        <Text fontSize="sm">{msg.text}</Text>
+                        <Text fontSize="xs" textAlign="right" mt={1} color="gray.500">{msg.time}</Text>
+                        </Box>
+                    </Flex>
+                ))}
             </VStack> 
             <Flex>
                 <Input placeholder="메시지 입력" value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => e.key === "Enter" && sendMessage()} />
