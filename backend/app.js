@@ -21,6 +21,9 @@ mongoose
 
 app.use("/api/products", productsRouter);
 
+const authRouter = require("./routes/auth");
+app.use("/api/auth", authRouter);
+
 function getReply(msg) {
   const text = msg.toLowerCase();
   if (text.includes("배송")) return "평균 배송 기간은 3~5일입니다.";
