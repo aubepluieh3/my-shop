@@ -1,11 +1,14 @@
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useCartStore } from "../store/useCartStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 export default function Header() {
   const cartCount = useCartStore((state) =>
     state.items.reduce((acc, item) => acc + item.quantity, 0)
   );
+
+  const { user } = useAuthStore();
 
   return (
     <Flex
@@ -39,6 +42,19 @@ export default function Header() {
             장바구니 ({cartCount})
           </Button>
         </Link>
+        {user ? (
+          <Link to="/mypage">
+            <Button colorScheme="blue" variant="solid" color="white">
+              내 정보
+            </Button>
+          </Link>
+        ) : (
+          <Link to="/login">
+            <Button colorScheme="blue" variant="solid" color="white">
+              로그인
+            </Button>
+          </Link>
+        )}
       </Flex>
     </Flex>
   );
