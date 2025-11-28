@@ -13,6 +13,12 @@ app.use(cors({
   }));
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: true }));
+
+const usersRouter = require("./routes/users");
+app.use("/api/users", usersRouter);
+app.use("/uploads", express.static("uploads"));
+
 mongoose
   .connect(process.env.MONGO_URI, { dbName: "shop" })
   .then(() => console.log("✅ MongoDB Connected"))
