@@ -23,12 +23,15 @@ mongoose
   .connect(process.env.MONGO_URI, { dbName: "shop" })
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Error:", err));
-  
 
 app.use("/api/products", productsRouter);
 
 const authRouter = require("./routes/auth");
 app.use("/api/auth", authRouter);
+
+const paymentRouter = require("./routes/payments");
+app.use("/api/payments", paymentRouter);
+
 
 function getReply(msg) {
   const text = msg.toLowerCase();
