@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import axiosInstance from "../utils/axiosInstance";
-import { Flex, Box, Input, Text, Avatar, Button, Divider, Spinner } from "@chakra-ui/react";
+import { Flex, Box, Input, Text, Avatar, Button, Spinner } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 interface OrderItem {
@@ -124,6 +124,4 @@ export default function MyPage() {
             </Box>
         </Flex>
     )
-
-
 }

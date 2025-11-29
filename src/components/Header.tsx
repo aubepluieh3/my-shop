@@ -1,5 +1,5 @@
-import { Flex, Box, Button, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Flex, Box, Button, Text, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCartStore } from "../store/useCartStore";
 import { useAuthStore } from "../store/useAuthStore";
 
@@ -8,7 +8,47 @@ export default function Header() {
     state.items.reduce((acc, item) => acc + item.quantity, 0)
   );
 
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+
+  const currentLocation = useLocation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const isMyPage = currentLocation.pathname === '/mypage';
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    onClose();
+    logout();
+    navigate('/');
+  };
+
+  const renderUserAuthButton = () => {
+    if (user) {
+      if (isMyPage) {
+        return (
+          <Button colorScheme="red" variant="solid" color="white" onClick={onOpen}>
+            로그아웃
+          </Button>
+        );
+      } else {
+        return (
+          <Link to="/mypage">
+            <Button colorScheme="blue" variant="solid" color="white">
+              내 정보
+            </Button>
+          </Link>
+        );
+      }
+    } else {
+      return (
+        <Link to="/login">
+          <Button colorScheme="blue" variant="solid" color="white">
+            로그인
+          </Button>
+        </Link>
+      );
+    }
+  };
 
   return (
     <Flex
@@ -42,20 +82,27 @@ export default function Header() {
             장바구니 ({cartCount})
           </Button>
         </Link>
-        {user ? (
-          <Link to="/mypage">
-            <Button colorScheme="blue" variant="solid" color="white">
-              내 정보
-            </Button>
-          </Link>
-        ) : (
-          <Link to="/login">
-            <Button colorScheme="blue" variant="solid" color="white">
-              로그인
-            </Button>
-          </Link>
-        )}
+        {renderUserAuthButton()}
       </Flex>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>로그아웃 확인</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            로그아웃 하시겠습니까?
+          </ModalBody>
+
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              아니요
+            </Button>
+            <Button colorScheme="red" onClick={handleLogout}>
+              예
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 }
