@@ -3,6 +3,7 @@ import { useCartStore } from "../store/useCartStore";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
+import { useAuthStore } from "../store/useAuthStore";
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "YK7Y2SpZ55rel0iCLXUH4";
@@ -11,13 +12,14 @@ export default function Checkout() {
   const cartItems = useCartStore((state) => state.items); // 항상 호출
   const location = useLocation();
   const items = (location.state?.products as any[]) || cartItems;
-  
-  const clearCart = useCartStore((state) => state.clearCart);
-  const navigate = useNavigate();
 
   const [amount, setAmount] = useState({ currency: "KRW", value: 0 });
   const [ready, setReady] = useState(false);
   const [widgets, setWidgets] = useState<any>(null);
+
+  const user = useAuthStore((state) => state.user);
+  const token = useAuthStore.getState().token;
+  const navigate = useNavigate();
 
   // 장바구니 총액 계산
   useEffect(() => {
@@ -49,22 +51,22 @@ export default function Checkout() {
 
   // 결제 버튼
   const handlePayment = async () => {
-    if (!widgets) return;
-    try {
-      await widgets.requestPayment({
-        orderId: "order_" + Date.now(),
-        orderName: "장바구니 상품",
-        successUrl: window.location.origin + "/success",
-        failUrl: window.location.origin + "/fail",
-        customerEmail: "customer123@gmail.com",
-        customerName: "홍길동",
-        customerMobilePhone: "01012341234",
-      });
+    if (!token) {
+      alert("로그인 후 결제 가능합니다!");
+      navigate("/login");
+      return;
+    }
 
-      if (!location.state?.products) {
-        clearCart();
-      }
-      navigate("/success");
+    if (!widgets) return;
+      try {
+        await widgets.requestPayment({
+          orderId: "order_" + Date.now(),
+          orderName: "장바구니 상품",
+          successUrl: window.location.origin + `/success?items=${encodeURIComponent(JSON.stringify(items))}`,
+          failUrl: window.location.origin + "/fail",
+          customerEmail: user?.email,
+          customerName: user?.name
+        });
     } catch (error) {
       console.error(error);
     }

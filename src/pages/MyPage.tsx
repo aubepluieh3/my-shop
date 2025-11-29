@@ -42,7 +42,6 @@ export default function MyPage() {
     useEffect(() => {
         const fetchPayments = async () => {
             try {
-                debugger;
                 const res = await axiosInstance.get("/payments/my");
                 setPaymentList(res.data);
             } catch (err) {
@@ -117,7 +116,6 @@ export default function MyPage() {
                         <Text>🧾 주문 ID: {item.orderId}</Text>
                         <Text>💰 금액: {item.amount}원</Text>
                         <Text>📅 날짜: {item.createdAt.slice(0, 10)}</Text>
-                        <Text>📦 상태: {item.status}</Text>
                         </Box>
                     ))
                 )}

@@ -1,16 +1,37 @@
 import { Box, Text, Button } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCartStore } from "../store/useCartStore";
+import axiosInstance from "../utils/axiosInstance";
 
 export default function Success() {
+    const [params] = useSearchParams();
+    const navigate = useNavigate();
     const clearCart = useCartStore((state) => state.clearCart);
 
     useEffect(() => {
-        clearCart();        // 결제 성공 시 장바구니 초기화
-    }, [clearCart]);
+        const paymentKey = params.get("paymentKey");
+        const orderId = params.get("orderId");
+        const amount = params.get("amount");
+        const itemsParam = params.get("items");
+        const items = itemsParam ? JSON.parse(itemsParam) : [];    
 
-    const navigate = useNavigate();
+        const confirmPayment = async () => {
+            try {
+                const res = await axiosInstance.post("/payments/confirm", {
+                    paymentKey,
+                    orderId,
+                    amount,
+                    items
+                });
+                console.log("💾 DB 저장 완료:", res.data);
+                clearCart();
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        confirmPayment();
+    }, [params, clearCart]);
 
     return (
         <Box p={8} textAlign="center">
