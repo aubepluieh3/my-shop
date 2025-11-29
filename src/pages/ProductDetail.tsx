@@ -4,6 +4,7 @@ import { Product, useCartStore } from "../store/useCartStore";
 import { useEffect, useState } from "react";
 import { fetchProductById } from "../api/productApi";
 import { MinusIcon, AddIcon } from "@chakra-ui/icons";
+import FullScreenSpinner from "../components/FullScreenSpinner";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -25,7 +26,7 @@ export default function ProductDetail() {
     loadProduct();
   }, [id]);
 
-  if (loading) return <Text>Loading...</Text>;
+  if (loading) return <FullScreenSpinner/>
   if (!product) return <Text>상품을 찾을 수 없습니다 😢</Text>;
 
   const finalPrice = product.discountRate 

@@ -5,6 +5,7 @@ import { Product } from "../store/useCartStore";
 import { useEffect, useState } from "react";
 import { fetchProducts } from "../api/productApi";
 import ChatButton from "../components/ChatButton";
+import FullScreenSpinner from "../components/FullScreenSpinner";
 
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -51,7 +52,7 @@ const Home = () => {
       </Box>
       <SimpleGrid columns={[1, 2, 3, 4]} spacing="6">
         {loading ? (
-          <Text>로딩중...</Text>
+          <FullScreenSpinner/>
         ) : products.length === 0 ? (
           <Text>검색 결과가 없습니다 😢</Text>
         ) : (

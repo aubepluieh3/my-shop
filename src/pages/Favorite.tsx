@@ -3,6 +3,7 @@ import { useFavoriteStore } from "../store/useFavoriteStore";
 import { useEffect, useState } from "react";
 import { Product } from "../store/useCartStore";
 import { fetchProducts } from "../api/productApi";
+import FullScreenSpinner from "../components/FullScreenSpinner";
 
 export default function Favorite() {
 
@@ -35,7 +36,7 @@ export default function Favorite() {
     }
   }, [loading, allProducts, favorites]);
 
-  if (loading) return <Text>상품 불러오는 중...</Text>;
+  if (loading) return <FullScreenSpinner/>
 
   return (
       <Box p={8}>
