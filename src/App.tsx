@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import MyPage from './pages/MyPage';
 import Fail from './pages/Fail';
+import Orders from './pages/Orders';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/favorite" element = {<Favorite/>} />
         <Route path="/cart" element = {<Cart/>} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/orders" element={<Orders/>} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
         <Route path="/fail" element={<Fail/>} />

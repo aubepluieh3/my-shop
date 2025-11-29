@@ -9,9 +9,10 @@ interface OrderItem {
     name: string;
     price: number;
     quantity: number;
+    image: string;
 }
 
-interface Order {
+export interface Order {
     _id: string;
     orderId: string;
     paymentKey: string;
@@ -104,20 +105,30 @@ export default function MyPage() {
                     ) : paymentList.length === 0 ? (
                     <Text color="gray.400">주문 내역이 없습니다.</Text>
                     ) : (
-                    paymentList.map((item) => (
-                        <Box
-                        key={item.orderId}
-                        p={4}
-                        mb={3}
-                        borderRadius="md"
-                        boxShadow="sm"
-                        textAlign="left"
-                        >
-                        <Text>🧾 주문 ID: {item.orderId}</Text>
-                        <Text>💰 금액: {item.amount}원</Text>
-                        <Text>📅 날짜: {item.createdAt.slice(0, 10)}</Text>
-                        </Box>
-                    ))
+                        <>
+                            {paymentList.slice(0, 2).map((item) => (
+                                <Box
+                                    key={item.orderId}
+                                    p={4}
+                                    mb={3}
+                                    borderRadius="md"
+                                    boxShadow="sm"
+                                    textAlign="left"
+                                    >
+                                    <Text>🧾 주문 ID: {item.orderId}</Text>
+                                    <Text>💰 금액: {item.amount.toLocaleString()}원</Text>
+                                    <Text>📅 날짜: {item.createdAt.slice(0, 10)}</Text>
+                                </Box>
+                            ))}
+                            <Button
+                            mt={4}
+                            variant="outline"
+                            width="100%"
+                            onClick={() => navigate("/orders")}
+                            >
+                                전체 결제 내역 보기 
+                            </Button>
+                    </>
                 )}
             </Box>
         </Flex>
