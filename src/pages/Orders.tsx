@@ -104,6 +104,10 @@ export default function Orders() {
                                                 가격:{" "}
                                                 {(item.price * item.quantity).toLocaleString()}원
                                             </Text>
+                                            <Text color="gray.600">
+                                                결제 수단:{" "}
+                                                {order.method}
+                                            </Text>
                                         </Flex>
                                     </Flex>
                                 ))}

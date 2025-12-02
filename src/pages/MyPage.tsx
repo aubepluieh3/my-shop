@@ -21,6 +21,7 @@ export interface Order {
     items: OrderItem[];
     status: string;
     createdAt: string;
+    method: String;
 }
 
 export default function MyPage() {
