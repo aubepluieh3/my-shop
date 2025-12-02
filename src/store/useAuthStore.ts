@@ -7,7 +7,7 @@ interface User {
     name: string,
     role: "user" | "admin",
     profileImage?: string;
-    level?: string;
+    level: number;
 }
 
 interface AuthState {

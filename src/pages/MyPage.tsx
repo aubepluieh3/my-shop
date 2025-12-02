@@ -88,7 +88,7 @@ export default function MyPage() {
                     <>
                         <Text fontSize="xl" fontWeight="bold"> {user?.name} </Text>
                         <Text color="gray.500">{user?.email}</Text>
-                        <Text color="gray.500">{user?.level}</Text>
+                        <Text color="gray.500"> LEVEL {user?.level}</Text>
                         <Button mt={4} onClick={() => setEditMode(true)}>변경하기</Button>
                     </>
                 ) : (<>

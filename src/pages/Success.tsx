@@ -1,21 +1,24 @@
 import { Box, Text, Button } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCartStore } from "../store/useCartStore";
 import axiosInstance from "../utils/axiosInstance";
+import LevelUpEffect from "../components/LevelUpEffect";
 
 export default function Success() {
     const [params] = useSearchParams();
     const navigate = useNavigate();
     const clearCart = useCartStore((state) => state.clearCart);
+    const [newLevel, setNewLevel] = useState<number | null>(null);
+    const [showAnimation, setShowAnimation] = useState(false);
 
     useEffect(() => {
         const paymentKey = params.get("paymentKey");
         const orderId = params.get("orderId");
-        const amount = params.get("amount");
+        const amount = Number(params.get("amount"));
         const itemsParam = params.get("items");
         const items = itemsParam ? JSON.parse(itemsParam) : [];    
-
+        const previousLevel = params.get("level") ?? 1;
         const confirmPayment = async () => {
             try {
                 const res = await axiosInstance.post("/payments/confirm", {
@@ -25,6 +28,11 @@ export default function Success() {
                     items
                 });
                 console.log("💾 DB 저장 완료:", res.data);
+                const level = res.data.newLevel;
+                if (level > previousLevel) {
+                    setNewLevel(level);
+                    setShowAnimation(true);
+                }
                 clearCart();
             } catch (err) {
                 console.error(err);
@@ -34,11 +42,13 @@ export default function Success() {
     }, [params, clearCart]);
 
     return (
-        <Box p={8} textAlign="center">
+        <Box p={20} textAlign="center">
         <Text fontSize="2xl" fontWeight="bold" mb={4}>
             ✅ 결제 완료
         </Text>
         <Text mb={6}>주문이 성공적으로 처리되었습니다.</Text>
+        {showAnimation && newLevel !== null  &&(
+            <LevelUpEffect level={newLevel} />)}
         <Button bg="blue.300" color="white" onClick={() => navigate("/")}>
             홈으로 돌아가기
         </Button>

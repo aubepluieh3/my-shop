@@ -57,15 +57,15 @@ export default function Checkout() {
       return;
     }
 
-    if (!widgets) return;
+    if (!widgets || !user) return;
       try {
         await widgets.requestPayment({
           orderId: "order_" + Date.now(),
           orderName: "장바구니 상품",
-          successUrl: window.location.origin + `/success?items=${encodeURIComponent(JSON.stringify(items))}`,
+          successUrl: window.location.origin + `/success?items=${encodeURIComponent(JSON.stringify(items))}&level=${encodeURIComponent(user.level)}`,
           failUrl: window.location.origin + "/fail",
-          customerEmail: user?.email,
-          customerName: user?.name
+          customerEmail: user.email,
+          customerName: user.name
         });
     } catch (error) {
       console.error(error);
