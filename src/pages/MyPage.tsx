@@ -3,6 +3,7 @@ import { useAuthStore } from "../store/useAuthStore";
 import axiosInstance from "../utils/axiosInstance";
 import { Flex, Box, Input, Text, Avatar, Button, Spinner } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import FullScreenSpinner from "../components/FullScreenSpinner";
 
 interface OrderItem {
     productId: string;
@@ -43,6 +44,7 @@ export default function MyPage() {
 
     useEffect(() => {
         const fetchPayments = async () => {
+            setLoading(true);
             try {
                 const res = await axiosInstance.get("/payments/my");
                 setPaymentList(res.data);
@@ -72,7 +74,8 @@ export default function MyPage() {
         console.log(err);
         }
     };
-
+    
+    if (loading) return <FullScreenSpinner/>
     return (
         <Flex direction="column" align="center" mt={10} px={4}>
             <Box width="600px" p={6} borderRadius="lg" boxShadow="md" bg="white" textAlign="center" mb={8}>

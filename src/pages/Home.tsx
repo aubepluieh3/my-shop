@@ -35,25 +35,26 @@ const Home = () => {
   
   
   return (
-    <Container maxW="container.lg" py="8">
-      <Input
-        placeholder="검색어를 입력하세요"
-        mb={6}
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            setSearch(searchTerm);
-          }
-        }}
-      />
+    loading ? (
+      <FullScreenSpinner/>
+    ) : (
+          <Container maxW="container.lg" py="8">
+            <Input
+              placeholder="검색어를 입력하세요"
+              mb={6}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setSearch(searchTerm);
+                }
+              }}
+            />
       <Box mb={8}>
         <BannerSlider />
       </Box>
       <SimpleGrid columns={[1, 2, 3, 4]} spacing="6">
-        {loading ? (
-          <FullScreenSpinner/>
-        ) : products.length === 0 ? (
+        {products.length === 0 ? (
           <Text>검색 결과가 없습니다 😢</Text>
         ) : (
           products.map((product) => (
@@ -63,6 +64,7 @@ const Home = () => {
       </SimpleGrid>
       <ChatButton />
     </Container>
+      )
   );
 };
 
