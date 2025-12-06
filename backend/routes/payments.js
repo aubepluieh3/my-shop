@@ -3,7 +3,7 @@ const router = express.Router();
 const got = require("got").default;
 const Order = require("../models/Order");
 const auth = require("../middleware/auth");
-const mongoose = require("mongoose");
+const User = require("../models/User");
 
 router.post("/confirm", auth, async (req, res) => {
   try {
@@ -44,7 +44,16 @@ router.post("/confirm", auth, async (req, res) => {
       status: paymentData.status,
     });
 
-    res.json({ success: true, order: newOrder });
+    const monthlyTotal = await getUserMonthlyPayments(userId);
+    const newLevel = calculateLevel(monthlyTotal);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId, { level: newLevel }, { new: true });
+
+    res.json({
+      message: "결제 및 레벨 업데이트 완료",
+      order: newOrder,
+      newLevel: updatedUser.level
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "결제 확인 실패", error: err });
@@ -57,5 +66,26 @@ router.get("/my", auth, async (req, res) => {
 
   res.json(orders);
 });
+
+async function getUserMonthlyPayments(userId) {
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  const orders = await Order.find({
+    user: userId,
+    status: "DONE",
+    createdAt: { $gte: oneMonthAgo }
+  });
+
+  const totalAmount = orders.reduce((sum, o) => sum + o.amount, 0);
+  return totalAmount;
+}
+
+function calculateLevel(amount) {
+  if (amount >= 500000) return 5;
+  if (amount >= 200000) return 4;
+  if (amount >= 100000) return 3;
+  if (amount >= 50000)  return 2;
+  return 1;
+}
 
 module.exports = router;
