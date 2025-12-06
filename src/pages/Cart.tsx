@@ -1,6 +1,8 @@
-import { Box, Flex, Text, Button, Image, Divider } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Image, Divider, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay } from "@chakra-ui/react";
 import { useCartStore } from "../store/useCartStore";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
+import { useState, useRef } from "react";
 
 
 export default function Cart() {
@@ -10,7 +12,20 @@ export default function Cart() {
   const decreaseItem = useCartStore((state) => state.decreaseItem);
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const navigate = useNavigate();
-  console.log(items);
+
+  const user = useAuthStore((state) => state.user);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const cancelRef = useRef(null);
+
+  const handleCheckout = () => {
+    if (!user) {
+      setIsOpen(true);
+      return;
+    }
+    navigate("/checkout");
+  }
+
 
   return (
     <Box p={8}>
@@ -73,12 +88,43 @@ export default function Cart() {
             </Text>
           </Flex>
           <Flex justify="flex-end" mt={4}>
-            <Button bg="blue.800" color="white" onClick={() => navigate("/checkout")}>
-              결제하기
-            </Button>
+          <Button bg="blue.800" color="white" onClick={handleCheckout}>
+            결제하기
+          </Button>
           </Flex>
         </Box>
       )}
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={() => setIsOpen(false)}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              로그인 필요 
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              로그인이 필요한 서비스입니다.  
+              로그인 페이지로 이동할게요.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button
+                colorScheme="blue"
+                onClick={() => {
+                  setIsOpen(false);
+                  navigate("/login");
+                }}
+              >
+                확인
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
     </Box>
   );
 }
