@@ -37,8 +37,7 @@ export default function SignUp() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5001/api/auth/signup", { email, password });
-      setUser(res.data.user, res.data.token);
+      await axios.post("http://localhost:5001/api/auth/signup", { email, password });
       onOpen();
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -111,8 +110,9 @@ export default function SignUp() {
               🎉 회원가입 완료
             </AlertDialogHeader>
 
-            <AlertDialogBody>
-              회원가입이 성공적으로 완료되었습니다. 로그인 페이지로 이동합니다.
+            <AlertDialogBody whiteSpace="pre-line">
+              회원가입이 성공적으로 완료되었습니다. {'\n'}
+              로그인 페이지로 이동합니다.
             </AlertDialogBody>
 
             <AlertDialogFooter>
