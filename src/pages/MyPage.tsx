@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import axiosInstance from "../utils/axiosInstance";
-import { Flex, Box, Input, Text, Avatar, Button, Spinner } from "@chakra-ui/react";
+import { Flex, Box, Input, Text, Avatar, Button, Spinner, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import FullScreenSpinner from "../components/FullScreenSpinner";
 
@@ -29,12 +29,70 @@ export default function MyPage() {
     const user = useAuthStore((state) => state.user);
     const token = useAuthStore((state) => state.token);
     const setUser = useAuthStore((state) => state.setUser);
+    const setToken = useAuthStore((state) => state.setToken);
     const navigate = useNavigate();
     const [profileImage, setProfileImage] = useState<File|null>(null);
     const [editMode, setEditMode] = useState(false);
     const [name, setName] = useState(user?.name || "");
     const [loading, setLoading] = useState(true);
     const [paymentList, setPaymentList] = useState<Order[]>([]);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [deletePassword, setDeletePassword] = useState("");
+    const toast = useToast();
+    const handleConfirmDelete = async () => {
+        if (!deletePassword.trim()) {
+            toast({
+                title: "비밀번호를 입력해주세요.",
+                status: "warning",
+                duration: 2000,
+                isClosable: true,
+                position: "top",
+            });
+            return;
+        }
+
+        try {
+            await axiosInstance.post("/users/delete", {
+                password: deletePassword,
+            });
+
+            toast({
+                title: "회원 탈퇴가 완료되었습니다.",
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+                position: "top",
+            });
+
+            setTimeout(() => {
+                setUser(null);
+                setToken(null);
+                navigate("/");
+            }, 1000);
+
+        } catch (err: any) {
+            console.log(err);
+
+            if (err.response?.data?.message === "Incorrect password") {
+                toast({
+                    title: "비밀번호가 일치하지 않습니다.",
+                    status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                    position: "top",
+                });
+            } else {
+                toast({
+                    title: "탈퇴 중 오류가 발생했습니다.",
+                    status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                    position: "top",
+                });
+            }
+        }
+    };
+
 
     useEffect(() => {
         if (!user) {
@@ -68,7 +126,8 @@ export default function MyPage() {
             headers: { "Content-Type": "multipart/form-data" },
         });
 
-        setUser(res.data.user, token ?? "");
+        setUser(res.data.user);
+        setToken(token ?? "");
         setEditMode(false);
         } catch (err) {
         console.log(err);
@@ -135,6 +194,25 @@ export default function MyPage() {
                     </>
                 )}
             </Box>
+            <Button mt={6} colorScheme="red" variant="outline" width="600px" onClick={() => setIsDeleteModalOpen(true)}>
+                회원 탈퇴하기
+            </Button>
+            <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>회원 탈퇴</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Text mb={2}>정말로 탈퇴하시겠습니까?</Text>
+                        <Text fontSize="sm" color="gray.500" mb={4}>계속하려면 비밀번호를 입력해주세요.</Text>
+                        <Input type="password" placeholder="비밀번호 입력" value={deletePassword} onChange={(e) => setDeletePassword(e.target.value)} />
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button variant="ghost" mr={3} onClick={() => { setDeletePassword(""); setIsDeleteModalOpen(false)}}> 취소 </Button>
+                        <Button colorScheme="red" onClick={handleConfirmDelete}>탈퇴하기</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Flex>
     )
 }

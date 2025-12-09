@@ -36,4 +36,27 @@ router.put("/update", auth, upload.single("profileImage"), async (req, res) => {
   }
 });
 
+const bcrypt = require("bcrypt");
+
+router.post("/delete", auth, async (req, res) => {
+  try {
+    const { password } = req.body;
+    const user = await User.findById(req.user.id);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!password) return res.status(400).json({ message: "Password is required" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Incorrect password" });
+    }
+
+    await User.findByIdAndDelete(req.user.id);
+
+    res.json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
 module.exports = router;
