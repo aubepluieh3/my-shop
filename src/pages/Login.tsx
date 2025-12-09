@@ -10,12 +10,14 @@ export default function Login() {
     const [error, setError] = useState("");
 
     const setUser = useAuthStore((state) => state.setUser);
+    const setToken = useAuthStore((state) => state.setToken);
     const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
             const res = await axios.post("http://localhost:5001/api/auth/login", { email, password });
-            setUser(res.data.user, res.data.token);
+            setUser(res.data.user);
+            setToken(res.data.token);
 
             if (res.data.user.role === "admin") navigate("/admin");
             else navigate("/");
