@@ -6,7 +6,7 @@
 
 # 상세 정보
 
-### 💗 홈 화면
+### 🫐 홈 화면
 
 배너 슬라이드로 광고
 
@@ -81,7 +81,7 @@ Zustand로 전역 관리
 
 <img width="1468" height="837" alt="Image" src="https://github.com/user-attachments/assets/9247352b-fea0-42ee-bca4-9bb83210e632" />
 
-### 내 정보 
+### 🤠 내 정보 
 
 프로필 사진, 이름, 계정 이메일 확인 가능
 
@@ -91,12 +91,15 @@ Zustand로 전역 관리
 
 <img width="1468" height="837" alt="Image" src="https://github.com/user-attachments/assets/a42b6e26-a804-4479-899d-48106c3133de" />
 
+### 💬 문의 챗봇
+
+특정 키워드 인식하여 자동응답
+
+<img width="1468" height="837" alt="Image" src="https://github.com/user-attachments/assets/1696e29a-0b82-4563-8fef-202a295fab9d" />
+
 # 기술 스택
 - React
 - React Router
 - Zustand
 - Chakra UI
 
-💬 문의 챗봇
-
-특정 키워드 인식하여 자동응답
