@@ -14,6 +14,7 @@
 
 <img width="1452" height="820" alt="Image" src="https://github.com/user-attachments/assets/6f9a96ba-f358-411f-b4be-0c7a6e13ad35" />
 
+<img width="1468" height="837" alt="Image" src="https://github.com/user-attachments/assets/bf088bcc-53c8-4a2a-9827-029c3626462d" />
 
 ### 🛍️ 상품 상세 화면
 
@@ -88,6 +89,8 @@ Zustand로 전역 관리
 회원 탈퇴 기능
 
 결제 내역 확인 가능 -> 결제 내역 페이지 이동
+
+<img width="1468" height="837" alt="Image" src="https://github.com/user-attachments/assets/8236cc8c-b490-4408-9546-862b942cd3a1" />
 
 <img width="1468" height="837" alt="Image" src="https://github.com/user-attachments/assets/a42b6e26-a804-4479-899d-48106c3133de" />
 
