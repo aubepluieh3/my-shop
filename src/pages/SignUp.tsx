@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { Box,Input, Button, Text,HStack, useDisclosure, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Spinner,} from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/useAuthStore";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
