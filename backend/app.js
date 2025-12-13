@@ -7,9 +7,11 @@ const { Server } = require("socket.io");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 const app = express();
 app.use(cors({
-    origin: "http://localhost:3000"
+    origin: FRONTEND_URL, 
+    credentials: true
   }));
 app.use(express.json());
 
@@ -45,7 +47,7 @@ function getReply(msg) {
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: FRONTEND_URL,
       methods: ["GET", "POST"],
     }
 });
@@ -69,5 +71,5 @@ io.on("connection", (socket) => {
 });
 
 
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import axios from "axios";
 import { Box, Input, Button, Text } from "@chakra-ui/react";
+import { BASE_API_URL } from "../constants";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ export default function Login() {
 
     const handleLogin = async () => {
         try {
-            const res = await axios.post("http://localhost:5001/api/auth/login", { email, password });
+            const res = await axios.post(`${BASE_API_URL}/api/auth/login`, { email, password });
             setUser(res.data.user);
             setToken(res.data.token);
 

@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Box,Input, Button, Text,HStack, useDisclosure, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Spinner,} from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BASE_API_URL } from "../constants";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ export default function SignUp() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
-
+  
   const handleSignUp = async () => {
     if (!email.trim() || !password.trim()) {
       setError("이메일과 비밀번호를 모두 입력해주세요.");
@@ -35,7 +36,7 @@ export default function SignUp() {
     setError("");
 
     try {
-      await axios.post("http://localhost:5001/api/auth/signup", { email, password });
+      await axios.post(`${BASE_API_URL}/api/auth/signup`, { email, password });
       onOpen();
     } catch (err) {
       if (axios.isAxiosError(err)) {

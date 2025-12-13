@@ -1,8 +1,8 @@
 import { Box, Button, Flex, Input, VStack, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-
-const socket = io("http://localhost:5001");
+import { BASE_API_URL } from "../constants";
+const socket = io(BASE_API_URL);
 
 interface ChatWindowProps {
     onClose: () => void;
