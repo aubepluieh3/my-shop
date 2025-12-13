@@ -4,6 +4,12 @@
 
 토스페이먼츠 위젯을 사용한 실제 결제 흐름까지 구현했습니다.
 
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Typescript-3178C6?style=flat-square&logo=TypeScript&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/zustand-orange?style=flat-square&logo=zustand&logoColor=white">
+<img src="https://img.shields.io/badge/chakra-%234ED1C5.svg?style=flat-square&logo=chakraui&logoColor=white">
+<img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=MongoDB&logoColor=white"/>
+
 # 상세 정보
 
 ### 🫐 홈 화면
@@ -99,10 +105,5 @@ Zustand로 전역 관리
 특정 키워드 인식하여 자동응답
 
 <img width="1468" height="837" alt="Image" src="https://github.com/user-attachments/assets/1696e29a-0b82-4563-8fef-202a295fab9d" />
-
-# 기술 스택
-- React
-- React Router
-- Zustand
 - Chakra UI
 
