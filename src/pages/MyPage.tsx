@@ -137,7 +137,7 @@ export default function MyPage() {
     if (loading) return <FullScreenSpinner/>
     return (
         <Flex direction="column" align="center" mt={10} px={4}>
-            <Box width="600px" p={6} borderRadius="lg" boxShadow="md" bg="white" textAlign="center" mb={8}>
+            <Box width="100%" maxW="600px" p={6} borderRadius="lg" boxShadow="md" bg="white" textAlign="center" mb={8}>
                 <Avatar size="xl" src={
                             profileImage
                             ? URL.createObjectURL(profileImage)
@@ -160,7 +160,7 @@ export default function MyPage() {
                     </>) 
                 }
             </Box>
-            <Box width="600px" p={6} borderRadius="lg" boxShadow="md" bg="white" textAlign="center">
+            <Box width="100%" maxW="600px" p={6} borderRadius="lg" boxShadow="md" bg="white" textAlign="center">
                 <Text fontSize="lg" fontWeight="bold" mb={4}>결제 내역 </Text>
 
                 {loading ? (
@@ -194,7 +194,7 @@ export default function MyPage() {
                     </>
                 )}
             </Box>
-            <Button mt={6} colorScheme="red" variant="outline" width="600px" onClick={() => setIsDeleteModalOpen(true)}>
+            <Button mt={6} mb={10} colorScheme="red" variant="outline" width="100%" maxW="600px" onClick={() => setIsDeleteModalOpen(true)}>
                 회원 탈퇴하기
             </Button>
             <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
